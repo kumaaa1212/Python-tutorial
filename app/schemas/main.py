@@ -19,4 +19,9 @@ class ItemUpdate(BaseModel):
     description: Optional[str] = Field(None, max_length=100, examples=["item1 description"])
     status: Optional[ItemStatus] = Field(None, examples=[ItemStatus.ON_SALE])
 
-
+class ItemResponse(BaseModel):
+    id: int = Field(ge=1, examples=[1])
+    name: str = Field(min_length=1, max_length=100, examples=["item1"])
+    price: int = Field(ge=0,examples=[10000])
+    description: Optional[str] = Field(None, max_length=100, examples=["item1 description"])
+    status: ItemStatus = Field(examples=[ItemStatus.ON_SALE])
