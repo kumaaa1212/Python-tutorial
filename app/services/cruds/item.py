@@ -1,10 +1,5 @@
 from typing import Optional
-from enum import Enum
-from app.schemas import main as item_schemas
-
-class ItemStatus(Enum):
-    ON_SALE = "ON_SALE"
-    SOLD_OUT = "SOLD_OUT"
+from app.schemas.main import ItemBase, ItemStatus, ItemUpdate
 
 
 class Item:
@@ -50,7 +45,7 @@ def find_by_name(name: str):
 
 # getはbodyの要素を取得している。
 # getを使わない理由は？なぜgetを使うのか？
-def create(item_create: item_schemas.ItemBase):
+def create(item_create: ItemBase):
     new_item = Item(
         len(items) + 1,
         item_create.name,
@@ -61,15 +56,24 @@ def create(item_create: item_schemas.ItemBase):
     items.append(new_item)
     return new_item
 
-def update(id: int, item_update):
+def update(id: int, item_update: ItemUpdate):
     for item in items:
         if item.id == id:
-            item.name = item_update.get("name", item.name)
-            item.price = item_update.get("price", item.price)
-            item.description = item_update.get("description", item.description)
-            item.status = item_update.get("status", item.status)
+            item.name = item.name if item_update.name is None else item_update.name
+            item.price = item.price if item_update.price is None else item_update.price
+            item.description = item.description if item_update.description is None else item_update.description
+            item.status = item.status if item_update.status is None else item_update.status
             return item
     return None
+# def update(id: int, item_update: ItemUpdate):
+#     for item in items:
+#         if item.id == id:
+#             item.name = item_update.get("name", item.name)
+#             item.price = item_update.get("price", item.price)
+#             item.description = item_update.get("description", item.description)
+#             item.status = item_update.get("status", item.status)
+#             return item
+#     return None
 
 def delete(id: int):
     for i in range(len(items)):
