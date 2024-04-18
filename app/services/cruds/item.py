@@ -1,6 +1,6 @@
 from typing import Optional
 from enum import Enum
-
+from app.schemas import main as item_schemas
 
 class ItemStatus(Enum):
     ON_SALE = "ON_SALE"
@@ -48,19 +48,18 @@ def find_by_name(name: str):
             filterd_items.append(item)
     return filterd_items
 
-
-# getはbodyの要素を取得している
-def create(item_create):
+# getはbodyの要素を取得している。
+# getを使わない理由は？なぜgetを使うのか？
+def create(item_create: item_schemas.ItemBase):
     new_item = Item(
         len(items) + 1,
-        item_create.get("name"),
-        item_create.get("price"),
-        item_create.get("description"),
+        item_create.name,
+        item_create.price,
+        item_create.description,
         ItemStatus.ON_SALE,
     )
     items.append(new_item)
     return new_item
-
 
 def update(id: int, item_update):
     for item in items:
