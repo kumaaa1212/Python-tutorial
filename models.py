@@ -1,8 +1,7 @@
 from datetime import datetime
-from main import Base
+from database import Base
 from sqlalchemy import Column, Integer, String, Enum, DateTime
 from app.schemas.main import ItemStatus
-
 
 class Item(Base):
     __tablename__ = "items"

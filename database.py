@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
+# SQLALCHEMY_DATABASE_URL = "postgresql://fastapiuser:fastapipass@0.0.0.0:5555/fleamarket"
 SQLALCHEMY_DATABASE_URL = "postgresql://fastapiuser:fastapipass@localhost:5555/fleamarket"
 # 0.0.0.0:5432はipアドレスとポート番号を指定している
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
