@@ -43,8 +43,7 @@ def find_by_name(name: str):
             filterd_items.append(item)
     return filterd_items
 
-# getはbodyの要素を取得している。
-# getを使わない理由は？なぜgetを使うのか？
+
 def create(item_create: ItemBase):
     new_item = Item(
         len(items) + 1,
@@ -56,15 +55,23 @@ def create(item_create: ItemBase):
     items.append(new_item)
     return new_item
 
+
 def update(id: int, item_update: ItemUpdate):
     for item in items:
         if item.id == id:
             item.name = item.name if item_update.name is None else item_update.name
             item.price = item.price if item_update.price is None else item_update.price
-            item.description = item.description if item_update.description is None else item_update.description
-            item.status = item.status if item_update.status is None else item_update.status
+            item.description = (
+                item.description
+                if item_update.description is None
+                else item_update.description
+            )
+            item.status = (
+                item.status if item_update.status is None else item_update.status
+            )
             return item
     return None
+
 # def update(id: int, item_update: ItemUpdate):
 #     for item in items:
 #         if item.id == id:
