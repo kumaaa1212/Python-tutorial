@@ -32,8 +32,8 @@ def find_all(db: Session):
 
 
 # 最初に見つかったデータを返す
-def find_by_id(db: Session, id: int):
-    return db.query(Item).filter(Item.id == id).first()
+def find_by_id(db: Session, id: int, user_id: int):
+    return db.query(Item).filter(Item.id == id).filter(Item.user_id == user_id).first()
 
 
 def find_by_name(db: Session, name: str):
@@ -42,15 +42,17 @@ def find_by_name(db: Session, name: str):
 
 # model_dump()はスキーマの内容を辞書型に変換するメソッド
 # **を二つつけることであんパックすることができる
-def create(db: Session, item_create: ItemBase):
-    new_item = Item(**item_create.model_dump())
+# Itemクラスで新しいデータを作成している
+# BaseModelとmodel_dumpの関係性
+def create(db: Session, item_create: ItemBase, user_id: int):
+    new_item = Item(**item_create.model_dump(), user_id=user_id)
     db.add(new_item)
     db.commit()
     return new_item
 
 
-def update(db: Session, id: int, item_update: ItemUpdate):
-    item = find_by_id(db, id)
+def update(db: Session, id: int, item_update: ItemUpdate, user_id: int):
+    item = find_by_id(db, id, user_id)
     if not item:
         return None
     item.name = item.name if item_update.name is None else item_update.name
@@ -75,8 +77,8 @@ def update(db: Session, id: int, item_update: ItemUpdate):
 #     return None
 
 
-def delete(db: Session, id: int):
-    item = find_by_id(db, id)
+def delete(db: Session, id: int, user_id: int):
+    item = find_by_id(db, id, user_id)
     if not item:
         return None
     db.delete(item)
